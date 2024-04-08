@@ -16,6 +16,14 @@ public class Lista<T> {
         return new ListaIterator<>(this.inicio);
     }
 
+    public T obterInicio(){
+        return this.inicio.getObjeto();
+    }
+
+    public T obterFim(){
+        return this.fim.getObjeto();
+    }
+
     public void inserir(T objeto){
         No<T> noAdicionado;
 
@@ -24,7 +32,7 @@ public class Lista<T> {
             this.inicio = noAdicionado;
         } else {
             noAdicionado = new No<>(objeto, this.fim);
-            this.fim.anterior = this.fim;
+            this.fim.proximo = noAdicionado;
         }
 
         this.fim = noAdicionado;
@@ -70,7 +78,8 @@ public class Lista<T> {
 
         No<T> noRemovido = this.fim;
 
-        noRemovido.anterior.proximo = null;
+        if (noRemovido.anterior != null)
+            noRemovido.anterior.proximo = null;
         this.fim = noRemovido.anterior;
         this.tamanho--;
 

@@ -2,6 +2,18 @@ public class Main {
 
     public static void main(String[] args) {
 
+        testeJogo();
+
+    }
+
+    private static void testeJogo(){
+        Jogo jogo = new Jogo(6);
+
+        jogo.iniciar();
+
+    }
+
+    private static void testeLista(){
         Lista<Peca> lista = new Lista<>();
 
         Peca _00 = new Peca(0, 0);
@@ -28,7 +40,6 @@ public class Main {
 
         lista.remover(1);
         output.imprimirLista(lista);
-
     }
 
 }

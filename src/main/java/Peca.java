@@ -2,10 +2,12 @@ public class Peca {
 
     private int valorA;
     private int valorB;
+    private String cor;
 
     public Peca(int valorA, int valorB) {
         this.valorA = valorA;
         this.valorB = valorB;
+        this.cor = ConsoleColor.ANSI_RESET;
     }
 
     public int getValorA() {
@@ -16,6 +18,10 @@ public class Peca {
         return valorB;
     }
 
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+
     public void girar() {
         int temp = this.valorA;
         this.valorA = this.valorB;
@@ -24,6 +30,6 @@ public class Peca {
 
     @Override
     public String toString() {
-        return String.format("[%d|%d]", this.valorA, this.valorB);
+        return String.format("%s[%d|%d]%s", this.cor, this.valorA, this.valorB, ConsoleColor.ANSI_RESET);
     }
 }
