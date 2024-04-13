@@ -88,7 +88,7 @@ public class Lista<T> {
 
     public T remover(int posicao) throws IllegalArgumentException {
         if (posicao < 1 || posicao > this.tamanho){
-            throw new IllegalArgumentException("Valor fora do permitido.");
+            throw new IllegalArgumentException("Valor fora do permitido");
         }
         No<T> noRemovido;
 

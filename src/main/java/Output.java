@@ -23,9 +23,27 @@ public class Output {
         System.out.println();
     }
 
+    public void imprimirLista_ComPosicaoDosNos(String prefixo, Lista lista){
+        ListaIterator listaIterator = lista.obterIterator();
+
+        if (lista.estaVazia()) { return; }
+
+        System.out.print(prefixo);
+        int pos = 1;
+        do { System.out.printf("(%d)%s ", pos++, listaIterator.obterObjeto().toString()); }
+        while (listaIterator.temProximo());
+
+        System.out.println();
+    }
+
     public void imprimirJogo(Jogador jogador, Lista<Peca> mesa) {
-        this.imprimirLista("Mesa: ", mesa);
-        this.imprimirLista("Jogador: ", jogador.getPecas());
+        System.out.println("+==========================================================================+");
+        System.out.println("|                        Estado atual do jogo                              +");
+        System.out.println("+==========================================================================+");
+        this.imprimirLista("| Mesa: ", mesa);
+        this.imprimirLista("| Mão do Jogador: ", jogador.getPecas());
+        System.out.println("+==========================================================================+");
+        System.out.println();
     }
 
     public void anunciarJogada(Jogador jogador, Peca peca) {
@@ -37,11 +55,15 @@ public class Output {
     }
 
     public void anunciarVencedor(Jogador jogador) {
-        System.out.printf("%s venceu o joga.\n", jogador.getNome());
+        System.out.printf("%s venceu o jogo!\n", jogador.getNome());
+    }
+
+    public void anunciarPrimeiraJogada(Jogador jogador) {
+        System.out.printf("O %s inicia por possuir a maior peça em mãos.\n", jogador.getNome());
     }
 
     public void solicitarEscolhaDePeca(){
-        System.out.print("Escolha uma peca para jogar: ");
+        System.out.print("Escolha uma peça para jogar (digite a posição da peça): ");
     }
 
     public void solicitarEscolhaDeAcao_NenhumaPecaJogavel(){

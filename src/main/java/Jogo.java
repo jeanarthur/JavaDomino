@@ -49,13 +49,14 @@ public class Jogo {
     }
 
     public void iniciar() {
-        this.output.imprimirLista("Mesa: ", this.mesa);
-        this.output.imprimirLista("Jogador: ", this.jogador.getPecas());
-        this.output.imprimirLista("Computador: ",this.computador.getPecas());
-        this.output.imprimirLista("Monte: ",this.monte);
+        // this.output.imprimirLista("Mesa: ", this.mesa);
+        // this.output.imprimirLista("Jogador: ", this.jogador.getPecas());
+        // this.output.imprimirLista("Computador: ",this.computador.getPecas());
+        // this.output.imprimirLista("Monte: ",this.monte);
 
         this.jogadorDaVez = (jogadorComeca()) ? this.jogador : this.computador;
         PontuacaoPeca pontuacaoPeca = obterPontuacaoPeca(this.jogadorDaVez.getPecas());
+        output.anunciarPrimeiraJogada(this.jogadorDaVez);
         jogarPeca(this.jogadorDaVez, (pontuacaoPeca.maiorDupla != -1) ? pontuacaoPeca.posicaoMaiorDupla : pontuacaoPeca.posicaoMaiorValor);
 
         boolean jogando = true;
@@ -68,20 +69,33 @@ public class Jogo {
                     Lista<Integer> posicoesJogaveis = this.obterPosicaoPecasJogaveis(this.jogadorDaVez);
                     if (posicoesJogaveis.estaVazia()){
                         output.solicitarEscolhaDeAcao_NenhumaPecaJogavel();
-                        if (input.obterInteiro() != 1){
-                            output.anunciarPassagemDaVez(this.jogadorDaVez);
-                            break;
-                        }
-
+                        int acaoSelecionada = -1;
                         try {
-                            this.comprarPeca(this.jogadorDaVez);
-                            output.imprimirJogo(this.jogador, this.mesa);
+                            acaoSelecionada = input.obterInteiro();
+                            if (acaoSelecionada == 2){
+                                output.anunciarPassagemDaVez(this.jogadorDaVez);
+                                break;
+                            } else if (acaoSelecionada == 1) {
+                                try {
+                                    this.comprarPeca(this.jogadorDaVez);
+                                    output.imprimirJogo(this.jogador, this.mesa);
+                                    continue;
+                                } catch (UnsupportedOperationException e) {
+                                    output.anunciarPassagemDaVez(this.jogadorDaVez);
+                                    break;
+                                }
+                            } else {
+                                output.anunciarOperacaoInvalida("Valor não corresponde a uma ação disponível");
+                                continue;
+                            }
+                        }
+                        catch (NumberFormatException e) {
+                            output.anunciarOperacaoInvalida("valor digitado não é um número");
                             continue;
-                        } catch (UnsupportedOperationException e) {
-                            output.anunciarPassagemDaVez(this.jogadorDaVez);
-                            break;
                         }
                     }
+                    output.imprimirLista("Peças na Mesa: ", this.mesa);
+                    output.imprimirLista_ComPosicaoDosNos("Mão do Jogador: ", this.jogadorDaVez.getPecas());
                     output.solicitarEscolhaDePeca();
                     try {
                         jogarPeca(this.jogadorDaVez, input.obterInteiro());
@@ -208,8 +222,15 @@ public class Jogo {
             boolean escolheuA = true;
             if (podeJogarNaPontaA && podeJogarNaPontaB) {
                 if (this.jogadorDaVez.equals(this.jogador)){
-                    output.solicitarEscolhaDePonta();
-                    escolheuA = input.obterInteiro() == 1;
+                    int acaoSelecionada = -1;
+                    do{
+                        output.solicitarEscolhaDePonta();
+                        try {
+                            acaoSelecionada = input.obterInteiro();
+                            escolheuA = acaoSelecionada == 1;
+                        }
+                        catch (NumberFormatException e) { output.anunciarOperacaoInvalida("Valor digitado não é um número"); }
+                    } while (acaoSelecionada != 1 && acaoSelecionada != 2);
                 } else {
                     escolheuA = inteiroAleatorio(1, 2) == 1;
                 }
