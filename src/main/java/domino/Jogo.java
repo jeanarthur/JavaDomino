@@ -56,82 +56,20 @@ public class Jogo {
     }
 
     public void iniciar() {
-        // this.output.imprimirLista("Mesa: ", this.mesa);
-        // this.output.imprimirLista("Jogador: ", this.jogador.getPecas());
-        // this.output.imprimirLista("Computador: ",this.computador.getPecas());
-        // this.output.imprimirLista("Monte: ",this.monte);
+        this.executarPrimeiraJogada();
+        this.executarPartida();
+    }
 
-        this.jogadorDaVez = (jogadorComeca()) ? this.jogador : this.computador;
-        PontuacaoPeca pontuacaoPeca = obterPontuacaoPeca(this.jogadorDaVez.getPecas());
-        output.anunciarPrimeiraJogada(this.jogadorDaVez);
-        jogarPeca(this.jogadorDaVez, (pontuacaoPeca.maiorDupla != -1) ? pontuacaoPeca.posicaoMaiorDupla : pontuacaoPeca.posicaoMaiorValor);
-
+    private void executarPartida() {
         boolean jogando = true;
         do{
             output.imprimirJogo(this.jogador, this.mesa);
             this.trocarJogadorDaVez();
 
             if (this.jogadorDaVez.equals(this.jogador)){
-                do {
-                    Lista<Integer> posicoesJogaveis = this.obterPosicaoPecasJogaveis(this.jogadorDaVez);
-                    if (posicoesJogaveis.estaVazia()){
-                        output.solicitarEscolhaDeAcao_NenhumaPecaJogavel();
-                        int acaoSelecionada = -1;
-                        try {
-                            acaoSelecionada = input.obterInteiro();
-                            if (acaoSelecionada == 2){
-                                output.anunciarPassagemDaVez(this.jogadorDaVez);
-                                break;
-                            } else if (acaoSelecionada == 1) {
-                                try {
-                                    this.comprarPeca(this.jogadorDaVez);
-                                    output.imprimirJogo(this.jogador, this.mesa);
-                                    continue;
-                                } catch (UnsupportedOperationException e) {
-                                    output.anunciarPassagemDaVez(this.jogadorDaVez);
-                                    break;
-                                }
-                            } else {
-                                output.anunciarOperacaoInvalida("Valor não corresponde a uma ação disponível");
-                                continue;
-                            }
-                        }
-                        catch (NumberFormatException e) {
-                            output.anunciarOperacaoInvalida("valor digitado não é um número");
-                            continue;
-                        }
-                    }
-                    output.imprimirLista("Peças na Mesa: ", this.mesa);
-                    output.imprimirLista_ComPosicaoDosNos("Mão do Jogador: ", this.jogadorDaVez.getPecas());
-                    output.solicitarEscolhaDePeca();
-                    try {
-                        jogarPeca(this.jogadorDaVez, input.obterInteiro());
-                    } catch (IllegalArgumentException e) {
-                        output.anunciarOperacaoInvalida(e.getMessage());
-                        continue;
-                    }
-                    break;
-                } while(true);
+                this.executarTurnoDoJogador();
             } else {
-                do {
-                    Lista<Integer> posicoesJogaveis = this.obterPosicaoPecasJogaveis(this.jogadorDaVez);
-                    if (posicoesJogaveis.estaVazia()){
-                        if (inteiroAleatorio(1, 2) != 1){
-                            output.anunciarPassagemDaVez(this.jogadorDaVez);
-                            break;
-                        }
-
-                        try {
-                            this.comprarPeca(this.jogadorDaVez);
-                            continue;
-                        } catch (UnsupportedOperationException e) {
-                            output.anunciarPassagemDaVez(this.jogadorDaVez);
-                            break;
-                        }
-                    }
-                    jogarPeca(this.jogadorDaVez, posicoesJogaveis.remover());
-                    break;
-                } while (true);
+                executarTurnoDoComputador();
             }
 
             if (this.jogadorDaVez.getPecas().getTamanho() == 0) {
@@ -140,7 +78,78 @@ public class Jogo {
             }
 
         } while(jogando);
+    }
 
+    private void executarTurnoDoComputador() {
+        do {
+            Lista<Integer> posicoesJogaveis = this.obterPosicaoPecasJogaveis(this.jogadorDaVez);
+            if (posicoesJogaveis.estaVazia()){
+                if (inteiroAleatorio(1, 2) != 1){
+                    output.anunciarPassagemDaVez(this.jogadorDaVez);
+                    break;
+                }
+
+                try {
+                    this.comprarPeca(this.jogadorDaVez);
+                    continue;
+                } catch (UnsupportedOperationException e) {
+                    output.anunciarPassagemDaVez(this.jogadorDaVez);
+                    break;
+                }
+            }
+            jogarPeca(this.jogadorDaVez, posicoesJogaveis.remover());
+            break;
+        } while (true);
+    }
+
+    private void executarTurnoDoJogador() {
+        do {
+            Lista<Integer> posicoesJogaveis = this.obterPosicaoPecasJogaveis(this.jogadorDaVez);
+            if (posicoesJogaveis.estaVazia()){
+                output.solicitarEscolhaDeAcao_NenhumaPecaJogavel();
+                int acaoSelecionada = -1;
+                try {
+                    acaoSelecionada = input.obterInteiro();
+                    if (acaoSelecionada == 2){
+                        output.anunciarPassagemDaVez(this.jogadorDaVez);
+                        break;
+                    } else if (acaoSelecionada == 1) {
+                        try {
+                            this.comprarPeca(this.jogadorDaVez);
+                            output.imprimirJogo(this.jogador, this.mesa);
+                            continue;
+                        } catch (UnsupportedOperationException e) {
+                            output.anunciarPassagemDaVez(this.jogadorDaVez);
+                            break;
+                        }
+                    } else {
+                        output.anunciarOperacaoInvalida("Valor não corresponde a uma ação disponível");
+                        continue;
+                    }
+                }
+                catch (NumberFormatException e) {
+                    output.anunciarOperacaoInvalida("valor digitado não é um número");
+                    continue;
+                }
+            }
+            output.imprimirLista("Peças na Mesa: ", this.mesa);
+            output.imprimirLista_ComPosicaoDosNos("Mão do Jogador: ", this.jogadorDaVez.getPecas());
+            output.solicitarEscolhaDePeca();
+            try {
+                jogarPeca(this.jogadorDaVez, input.obterInteiro());
+            } catch (IllegalArgumentException e) {
+                output.anunciarOperacaoInvalida(e.getMessage());
+                continue;
+            }
+            break;
+        } while(true);
+    }
+
+    private void executarPrimeiraJogada() {
+        this.jogadorDaVez = (jogadorComeca()) ? this.jogador : this.computador;
+        PontuacaoPeca pontuacaoPeca = obterPontuacaoPeca(this.jogadorDaVez.getPecas());
+        output.anunciarPrimeiraJogada(this.jogadorDaVez);
+        jogarPeca(this.jogadorDaVez, (pontuacaoPeca.maiorDupla != -1) ? pontuacaoPeca.posicaoMaiorDupla : pontuacaoPeca.posicaoMaiorValor);
     }
 
     private void trocarJogadorDaVez(){
