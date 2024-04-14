@@ -69,12 +69,30 @@ public class Jogo {
             if (this.jogadorDaVez.equals(this.jogador)){
                 this.executarTurnoDoJogador();
             } else {
-                executarTurnoDoComputador();
+                this.executarTurnoDoComputador();
             }
 
             if (this.jogadorDaVez.getPecas().getTamanho() == 0) {
                 output.anunciarVencedor(this.jogadorDaVez);
                 jogando = false;
+            }
+
+            if (this.monte.estaVazia()) {
+                Lista<Integer> posicoesJogaveisJogador = this.obterPosicaoPecasJogaveis(this.jogador);
+                Lista<Integer> posicoesJogaveisComputador = this.obterPosicaoPecasJogaveis(this.computador);
+                if (posicoesJogaveisJogador.estaVazia() && posicoesJogaveisComputador.estaVazia()) {
+                    PontuacaoPeca pontuacaoJogador = this.obterPontuacaoPeca(this.jogador.getPecas());
+                    PontuacaoPeca pontuacaoComputador = this.obterPontuacaoPeca(this.computador.getPecas());
+
+                    if (pontuacaoJogador.somaTotalValores == pontuacaoComputador.somaTotalValores) {
+                        output.anunciarEmpate();
+                    } else {
+                        // Vençe o jogador com a menor pontuação somando os valores de todas as peças
+                        output.anunciarVencedor(pontuacaoComputador.somaTotalValores > pontuacaoJogador.somaTotalValores ? this.jogador : this.computador);
+                    }
+
+                    jogando = false;
+                }
             }
 
         } while(jogando);
@@ -178,12 +196,14 @@ public class Jogo {
         int maiorValor;
         int posicaoMaiorDupla;
         int posicaoMaiorValor;
+        int somaTotalValores;
 
-        public PontuacaoPeca(int maiorDupla, int maiorValor, int posicaoMaiorDupla, int posicaoMaiorValor) {
+        public PontuacaoPeca(int maiorDupla, int maiorValor, int posicaoMaiorDupla, int posicaoMaiorValor, int somaValoresTotal) {
             this.maiorDupla = maiorDupla;
             this.maiorValor = maiorValor;
             this.posicaoMaiorDupla = posicaoMaiorDupla;
             this.posicaoMaiorValor = posicaoMaiorValor;
+            this.somaTotalValores = somaValoresTotal;
         }
     }
 
@@ -192,6 +212,7 @@ public class Jogo {
         int maiorValor = -1;
         int posicaoMaiorDupla = -1;
         int posicaoMaiorValor = -1;
+        int somaTotalValores = 0;
 
         int pos = 1;
         ListaIterator<Peca> listaIterator = lista.obterIterator();
@@ -212,10 +233,12 @@ public class Jogo {
                 posicaoMaiorValor = pos;
             }
 
+            somaTotalValores += valorPeca;
+
             pos++;
         } while (listaIterator.temProximo());
 
-        return new PontuacaoPeca(maiorDupla, maiorValor, posicaoMaiorDupla, posicaoMaiorValor);
+        return new PontuacaoPeca(maiorDupla, maiorValor, posicaoMaiorDupla, posicaoMaiorValor, somaTotalValores);
     }
 
     private void jogarPeca(Jogador jogador, int posicaoPeca) throws IllegalArgumentException{

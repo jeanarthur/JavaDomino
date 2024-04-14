@@ -65,6 +65,10 @@ public class Output {
         System.out.printf("%s venceu o jogo!\n", jogador.getNome());
     }
 
+    public void anunciarEmpate() {
+        System.out.printf("O jogo encerrou empatado pois ambos os jogadores não podem jogar e possuem a mesma pontuação!\n");
+    }
+
     public void anunciarPrimeiraJogada(Jogador jogador) {
         System.out.printf("O %s inicia por possuir a maior peça em mãos.\n", jogador.getNome());
     }

@@ -39,3 +39,5 @@
 - #### Se a peça pode ser colocada em ambos os lados, será solicitado que o jogador selecione o lado desejado.(No caso do Computadoor é escolhido o lado de forma aleatória)
 - #### Se não pode ser colocada em nenhum dos lados, será exibida uma mensagem soicitado que selecione uma peça válida.
 - #### O jogo segue dessa forma até que um dos jogadores tenha zerado o número de peças na mão, sendo o vencedor da partida.
+- #### Se o monte de compra estiver vazio e ambos os jogadores não puderem jogar, vence aquele que possuir a menor pontuação (soma dos valores de todas as peças em mão)
+- #### Se a pontuação for igual para ambos jogadores é declarado empate.
