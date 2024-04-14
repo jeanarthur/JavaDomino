@@ -1,4 +1,11 @@
-import javax.naming.OperationNotSupportedException;
+package domino;
+
+import estruturaDeDados.Lista;
+import estruturaDeDados.ListaIterator;
+import utilitarios.ConsoleColor;
+import utilitarios.Input;
+import utilitarios.Output;
+
 import java.util.Random;
 
 public class Jogo {
@@ -34,15 +41,15 @@ public class Jogo {
     }
 
     private void distribuirPecas(){
-        int qtdInicial = Math.floorDiv(this.monte.tamanho, 4);
+        int qtdInicial = Math.floorDiv(this.monte.getTamanho(), 4);
 
         Peca peca;
         for (int i = 0; i < qtdInicial; i++){
-            peca = monte.remover(inteiroAleatorio(1, monte.tamanho));
+            peca = monte.remover(inteiroAleatorio(1, monte.getTamanho()));
             peca.setCor(ConsoleColor.ANSI_CYAN);
             jogador.getPecas().inserir(peca);
 
-            peca = monte.remover(inteiroAleatorio(1, monte.tamanho));
+            peca = monte.remover(inteiroAleatorio(1, monte.getTamanho()));
             peca.setCor(ConsoleColor.ANSI_YELLOW);
             computador.getPecas().inserir(peca);
         }
@@ -127,7 +134,7 @@ public class Jogo {
                 } while (true);
             }
 
-            if (this.jogadorDaVez.getPecas().tamanho == 0) {
+            if (this.jogadorDaVez.getPecas().getTamanho() == 0) {
                 output.anunciarVencedor(this.jogadorDaVez);
                 jogando = false;
             }
@@ -260,7 +267,7 @@ public class Jogo {
             throw new UnsupportedOperationException("Monte está vazio.");
         }
 
-        Peca pecaComprada = this.monte.remover(this.inteiroAleatorio(1, this.monte.tamanho));
+        Peca pecaComprada = this.monte.remover(this.inteiroAleatorio(1, this.monte.getTamanho()));
         pecaComprada.setCor(jogador.equals(this.jogador) ? ConsoleColor.ANSI_CYAN : ConsoleColor.ANSI_YELLOW);
         jogador.getPecas().inserir(pecaComprada);
         this.output.anunciarCompra(jogador);

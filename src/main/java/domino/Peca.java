@@ -1,3 +1,7 @@
+package domino;
+
+import utilitarios.ConsoleColor;
+
 public class Peca {
 
     private int valorA;

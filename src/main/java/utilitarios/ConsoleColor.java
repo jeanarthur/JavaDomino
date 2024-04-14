@@ -1,3 +1,5 @@
+package utilitarios;
+
 public class ConsoleColor {
 
     public static final String ANSI_RESET = "\u001B[0m";

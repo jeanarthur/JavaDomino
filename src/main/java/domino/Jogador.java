@@ -1,3 +1,7 @@
+package domino;
+
+import estruturaDeDados.Lista;
+
 public class Jogador {
 
     private String nome;

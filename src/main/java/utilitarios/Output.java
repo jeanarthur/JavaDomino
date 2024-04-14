@@ -1,3 +1,10 @@
+package utilitarios;
+
+import domino.Jogador;
+import domino.Peca;
+import estruturaDeDados.Lista;
+import estruturaDeDados.ListaIterator;
+
 public class Output {
 
     public void imprimirLista(Lista lista){

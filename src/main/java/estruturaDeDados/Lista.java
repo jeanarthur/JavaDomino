@@ -1,3 +1,5 @@
+package estruturaDeDados;
+
 public class Lista<T> {
 
     No<T> inicio;
@@ -6,6 +8,10 @@ public class Lista<T> {
 
     public Lista() {
         this.tamanho = 0;
+    }
+
+    public int getTamanho() {
+        return tamanho;
     }
 
     public boolean estaVazia(){

@@ -1,3 +1,5 @@
+package estruturaDeDados;
+
 public class ListaIterator<T> {
 
     private No<T> noAtual;

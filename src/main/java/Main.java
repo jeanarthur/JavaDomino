@@ -1,3 +1,8 @@
+import domino.Jogo;
+import domino.Peca;
+import estruturaDeDados.Lista;
+import utilitarios.Output;
+
 public class Main {
 
     public static void main(String[] args) {

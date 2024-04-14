@@ -1,3 +1,5 @@
+package estruturaDeDados;
+
 public class No<T> {
 
     private T objeto;
